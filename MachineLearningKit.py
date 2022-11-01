@@ -12,26 +12,34 @@ class layer():
         self.e = np.ones(m)
 
 
-class MLPClassifier():
+class MLPClassifier:
 
     def __init__(self,
-                 hidden_layer_sizes=(10),
+                 hidden_layer_sizes=((10)),
                  activation='tanh',
                  learning_rate='constant',
+                 solver='lbfgs',
                  learning_rate_init=0.001,
                  max_iter=200,
                  shuffle=True,
-                 random_state=1
+                 random_state=1,
+                 n_individuals=10
                  ):
-        self.hidden_layer_sizes=hidden_layer_sizes
+
         self.activation=activation
         self.learning_rate = learning_rate
         self.learning_rate_init = learning_rate_init
         self.max_iter = max_iter
         self.shuffle = shuffle
         self.random_state = random_state
+        self.n_individuals = 10
 
-        self.L = len(hidden_layer_sizes)+1
+        if type(hidden_layer_sizes) == int:
+            self.hidden_layer_sizes=(hidden_layer_sizes,)
+            self.L = 2
+        else:
+            self.hidden_layer_sizes = hidden_layer_sizes
+            self.L = len(hidden_layer_sizes)+1
         self.m = [10]
         self.a = 1
         self.b = 1
@@ -44,7 +52,8 @@ class MLPClassifier():
         self.generation = 0
         self.class_distinction_rate = 0.
         self.flag_test_acertividade = False
-
+        self.coefs_=None
+        self.intercepts_=None
 
     def initialize_layers(self, n_input_nodes, n_classes):
         input_nodes = np.array((n_input_nodes))
@@ -192,7 +201,7 @@ class MLPClassifier():
         return num_out
 
     def clone(self):
-        clone = rede_neural(self.L, self.m, self.a, self.b)
+        clone = MLPClassifier(self.L, self.m, self.a, self.b)
         clone.set_fitness(self.get_fitness())
         clone.set_generation(self.get_generation())
         clone.set_id(self.get_id())
@@ -218,3 +227,15 @@ class MLPClassifier():
         # num = dataset_shufle.iloc[ni, 0]
         d[output_value] = 1.
         return d
+
+
+
+    def fit(self,X,y):
+        if self.solver == 'BackPropagation':
+            pass
+        elif self.solver == 'Genetic':
+            pass
+
+    def predict(self,X):
+        pass
+
