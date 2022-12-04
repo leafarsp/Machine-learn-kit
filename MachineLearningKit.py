@@ -1,5 +1,19 @@
 import numpy as np
 import pandas as pd
+from enum import Enum
+
+class activation_function_name(Enum):
+    TANH=1
+    LOGISTIC=2
+
+class selection_parents_mode(Enum):
+    K_TOURNAMENT=1
+    ROULETTE_WHEEL=2
+    RANK_SELECTION=3
+
+class solver(Enum):
+    BACKPROPAGATION=1
+    GENETIC_ALGORITHM=2
 
 class layer():
     def __init__(self, m, m_ant):
@@ -16,9 +30,9 @@ class MLPClassifier:
 
     def __init__(self,
                  hidden_layer_sizes=((10)),
-                 activation='tanh',
+                 activation:activation_function_name=activation_function_name.TANH,
                  learning_rate='constant',
-                 solver='lbfgs',
+                 solver:solver=solver.BACKPROPAGATION,
                  learning_rate_init=0.001,
                  max_iter=200,
                  shuffle=True,
